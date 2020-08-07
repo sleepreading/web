@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=Z4RRRuk8Cob0PA8uTIm0Xn3hCZtBfsHD"></script>
+  <style>
+  html, body, #allmap { width: 100%; height: 100%; overflow: hidden; margin: 0 auto; }
+  </style>
+  <title>百度地图</title>
+</head>
+<body>
+  <div id="allmap"></div>
+  <script>
+    var myGeo = new BMap.Geocoder()
+    var map = new BMap.Map('allmap')
+    var index = 0
+    var point = new BMap.Point(116.404, 39.915)
+    map.centerAndZoom(point, 5)                   // 创建地图及放大倍数
+    // 添加地图控件
+    map.addControl(new BMap.NavigationControl())
+    map.addControl(new BMap.ScaleControl())
+    map.addControl(new BMap.OverviewMapControl())
+    map.addControl(new BMap.MapTypeControl())
+
+    // 地点
+    var adds = ['合肥', '马鞍山', '北京', '厦门', '福州', '泉州', '兰州', '深圳', '广州', '佛山', '揭阳', '南宁', '贵阳', '海口', '保定', '石家庄', '邢台', '邯郸', '郑州', '洛阳', '安阳', '开封', '新乡', '驻马店', '哈尔滨', '武汉', '襄阳', '长沙', '邵阳', '衡阳', '延边朝鲜族自治州', '长春', '南京', '徐州', '常州', '扬州', '南通', '南昌', '新余', '大连', '丹东', '沈阳', '营口', '锦州', '铁岭', '通辽', '呼和浩特', '银川', '西宁', '济南', '青岛', '滨州', '忻州', '晋城', '朔州', '太原', '西安', '安康', '上海', '成都', '德阳', '南充', '天津', '乌鲁木齐', '昆明', '金华', '舟山', '杭州', '重庆']
+    
+    function bgGEO() {
+      var add = adds[index]
+      geocodeSearch(add)
+      index++
+    }
+    bgGEO()    
+
+    function geocodeSearch(add) {
+      if (index < adds.length) {
+        setTimeout(window.bgGEO, 400)
+      }
+      myGeo.getPoint(add, function (point) {
+        if (point) {
+          var address = new BMap.Point(point.lng, point.lat)
+          addMarker(address)
+        }
+      })
+    }
+
+    // 创建标注点并添加到地图中
+    function addMarker(point) {
+      var marker = new BMap.Marker(point)
+      map.addOverlay(marker)
+      //marker.setAnimation(BMAP_ANIMATION_BOUNCE)
+    }
+  </script>
+</body>
+</html>
